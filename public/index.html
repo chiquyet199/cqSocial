@@ -1,0 +1,47 @@
+<html>
+<head>
+  <title>Basic MEAN</title>
+
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="/styles/styles.css" rel="stylesheet">
+  <link href="/libs/css/angular-toastr.css" rel="stylesheet">
+
+  <script src="/libs/js/angular.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+  <script src="/libs/js/angular-route.js"></script>
+  <script src="/libs/js/angular-toastr.js"></script>
+  <script src="/libs/js/angular-toastr.tpls.js"></script>
+
+  <script src="/scripts/app.js"></script>
+  <script src="/scripts/controllers/mainCtrl.js"></script>
+  <script src="/scripts/controllers/authCtrl.js"></script>
+  <script src="/scripts/controllers/navCtrl.js"></script>
+  <script src="/scripts/services/postsSvc.js"></script>
+  <script src="/scripts/services/notificationSvc.js"></script>
+  <script src="/scripts/services/authSvc.js"></script>
+  <script src="/scripts/directives/confirmClick.js"></script>
+  <script src="/scripts/directives/post.js"></script>
+  <script src="/scripts/filters/reverse.js"></script>
+</head>
+<body ng-app="app">
+
+  <!-- HEADER -->
+  <nav class="navbar navbar-default" ng-controller="navCtrl">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CQ-Social</a>
+    </div>
+    <ul class="nav navbar-nav pull-right">
+      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a href="/" ng-click="logOut()">Log Out</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+    </ul>
+  </nav>
+
+  <div>
+    <ui-view></ui-view>
+  </div>
+
+</body>
+</html>

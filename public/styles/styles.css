@@ -1,0 +1,53 @@
+ul{
+  padding: 10px;
+  margin: 0;
+}
+li{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.author{
+  margin-left: 20px;
+  font-size: 1.3em;
+  text-decoration: underline;
+}
+.title{
+  margin-left: 10px;
+}
+
+.glyphicon{
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.badge{
+  float: right;
+}
+
+.post{
+  margin-bottom: 15px;
+}
+
+.post-edit-tooltip{
+  width: 100%;
+}
+
+#post-edit{
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.comment{
+  transition: height 1.5s ease-in-out;
+  height: 0px;
+  overflow: hidden;
+}
+
+.comment.active{
+  height: auto;
+}
+
+.hidden{
+  display: hidden
+}
