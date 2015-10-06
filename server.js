@@ -1,6 +1,8 @@
 // set up ===================================================================================================
 var express = require('express');
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var path = require('path');
 var mongoose = require('mongoose');                 //Working with mongodb
 var passport = require('passport');
@@ -12,6 +14,9 @@ var publicDir = path.join(__dirname, 'public');
 
 var cors = require('cors');
 app.use(cors({credentials: true, origin: true}));
+
+//socket set up =============================================================================================
+var io = require('./sockets')(http);
 
 // views set up =============================================================================================
 app.set('views', path.join(__dirname, 'views'));
@@ -36,9 +41,9 @@ app.use(bodyParser.urlencoded({ 'extended': 'true'}));            // parse appli
 app.use(bodyParser.json({ type: 'application/vnd.api+json'}));    // parse application/vnd.api+json as json
 
 // route ====================================================================================================
-var indexRouter = require('./routes/index');
-var apiRouter = require('./routes/api');
-var authRouter = require('./routes/auth');
+var indexRouter = require('./routes/index')(io);
+var apiRouter = require('./routes/api')(io);
+var authRouter = require('./routes/auth')(io);
 app.use('/api/posts', apiRouter);
 app.use('/', authRouter)
 app.get('*', indexRouter);
@@ -63,7 +68,7 @@ app.use(function(err, req, res, next) {
 
 
 // start app ================================================================================================
-app.listen(port, function(){
+http.listen(port, function(){
   console.log('Your server is running on', port);
 });
 

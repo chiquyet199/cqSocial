@@ -12,7 +12,7 @@ function post(){
       postObj: '=',
       voteFunc: '&'
     },
-    controller: function($scope, postsSvc, authSvc, notificationSvc){
+    controller: function($scope, postsSvc, authSvc, notificationSvc, socketIO){
       $scope.editMode = false;
       $scope.voteMode = getVoteMode(authSvc.currentUser());
 
@@ -46,6 +46,7 @@ function post(){
         };
         postsSvc.createComment(post._id, comment).success(function(data){
           post.comments.push(data);
+          socketIO.emit('postCmt');
         });
         $scope.commentBody = '';
       };
@@ -69,6 +70,7 @@ function post(){
           notificationSvc.error('Open console to see full error!')
           console.log('error:', err);
         }).success(function(){
+          toggleEditModeFunc();
           notificationSvc.success('Update successful!')
         });
       }
@@ -78,10 +80,18 @@ function post(){
           notificationSvc.error(err.message);
         }).success(function(){
           notificationSvc.success('Successfully deleted!');
-          var p = $scope.$parent.posts.filter(function(item){
-            return item._id === post._id;
-          });
-          $scope.$parent.posts.pop(p);
+          // var p = $scope.$parent.posts.filter(function(item){
+          //   return item._id === post._id;
+          // });
+          // $scope.$parent.posts.pop(p);
+          var length = $scope.$parent.posts.length;
+          for(var i = 0; i < length; i++){
+            if($scope.$parent.posts[i]._id === postId){
+              console.log('remove post on socket');
+              $scope.$parent.posts.splice(i,1);
+              return;
+            }
+          }
         });
       }
 
@@ -93,7 +103,8 @@ function post(){
         postsSvc.upvote(post._id, upvoteInfo).success(function(data){
           $scope.postObj = data;
           $scope.voteMode = getVoteMode(authSvc.currentUser());
-          notificationSvc.success('Upvoted!')
+          socketIO.emit('postVoted');
+          // notificationSvc.success('voted!')
         });
       }
     },
