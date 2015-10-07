@@ -14,6 +14,7 @@ function init(io){
       post.author = req.payload.username || 'Anonymous';
       post.title = req.body.title || post.title;
       post.link = req.body.link || post.link;
+      post.time = new Date().getTime();
 
       post.save(function(err, post){
         if(err){ return next(err); }
@@ -70,19 +71,18 @@ function init(io){
         _id: req.params.post_id
       }, function(err, post){
         if(err){ return next(err); }
-        console.log(io.broadcast);
         io.emit('postDeleted', req.params.post_id);
         res.json({ message: 'Succesfully deleted!'})  ;
       });
     });
 
-  router.route('/:post_id/upvote')
+  router.route('/:post_id/vote')
 
     .put(auth, function(req, res, next){
-      var upvoteInfo = req.body;
-      req.post.upvote(upvoteInfo, function(err, post){
+      var voteInfo = req.body;
+      req.post.vote(voteInfo, function(err, post){
         if(err){ return next(err)};
-        io.emit('news', {mes: 'hello'});
+        io.emit('postVoted', post);
         res.json(post);
       });
     });
@@ -103,12 +103,18 @@ function init(io){
       var comment = new Comment(req.body);
       comment.post = req.post;
       comment.author = req.payload.username;
+      comment.time = new Date().getTime();
 
       comment.save(function(err, comment){
         req.post.comments.push(comment);
         req.post.save(function(err, post){
           if(err){ return next(err); }
-          res.json(comment);
+          var data = {
+            post: req.post,
+            cmt: comment
+          };
+          // io.emit('postCommented', data);
+          res.json(data);
         });
       });
     });

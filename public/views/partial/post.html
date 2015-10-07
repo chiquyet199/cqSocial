@@ -1,5 +1,5 @@
 <div class="post">
-  <span class="badge">{{postObj.upvotes}}</span>
+  <span class="badge">{{postObj.votes}}</span>
   <span ng-show="voteMode" class="glyphicon glyphicon-thumbs-up" ng-click="votePost(postObj)"></span>
   <span ng-hide="voteMode" class="glyphicon glyphicon-thumbs-down" ng-click="votePost(postObj)"></span>
   <span class="glyphicon glyphicon-comment"></span>
@@ -17,10 +17,10 @@
     <ul ng-repeat="cmt in postObj.comments | reverse">
       <li>
         <div class="container-fluid">
-          <div class="col-md-2">
-            <strong>{{cmt.author}}:</strong>
+          <div class="col-md-3">
+            <strong>{{cmt.author}}:</strong></br><small>{{cmt.time | datetime}}</small>
           </div>
-          <div class="col-md-10">
+          <div class="col-md-9">
             {{cmt.body}}
           </div>
         </div>

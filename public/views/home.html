@@ -2,7 +2,7 @@
   <div class="col-md-7">
     <ul class="list-group">
       <li class="list-group-item post" ng-repeat="post in posts">
-      <!-- <li class="list-group-item post" ng-repeat="post in posts | orderBy:'-upvotes'"> -->
+      <!-- <li class="list-group-item post" ng-repeat="post in posts | orderBy:'-votes'"> -->
 
         <post post-obj="post" vote-func="votePost(post)"></post>
 

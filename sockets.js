@@ -6,6 +6,9 @@ function init(server) {
     socket.on('newEvent', function (data) {
       console.log(data);
     });
+    socket.on('postCmt', function(data){
+      socket.broadcast.emit('postCommented', data);
+    });
   });
   return io;
 }

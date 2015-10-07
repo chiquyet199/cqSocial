@@ -28,8 +28,8 @@ function postsSvc($http, authSvc){
         headers: {Authorization: 'Bearer '+ authSvc.getToken()}
       });
     },
-    upvote: function(postId, upvoteInfo){
-      return $http.put('/api/posts/' + postId + '/upvote', upvoteInfo, {
+    vote: function(postId, voteInfo){
+      return $http.put('/api/posts/' + postId + '/vote', voteInfo, {
         headers: {Authorization: 'Bearer '+ authSvc.getToken()}
       });
     },

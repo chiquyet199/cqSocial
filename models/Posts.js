@@ -4,25 +4,26 @@ var PostSchema = new mongoose.Schema({
   title: String,
   link: String,
   author: String,
-  upvotes: { type: Number, default: 0},
-  upvotesArr: { type: Array, default: [{ upvoter: 'xxx', value: 0 }]},
+  time: {type: Number, default: 0},
+  votes: { type: Number, default: 0},
+  votesArr: { type: Array, default: [{ voter: 'xxx', value: 0 }]},
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]
 });
 
-PostSchema.methods.upvote = function(upvoteInfo, cb){
+PostSchema.methods.vote = function(voteInfo, cb){
   var self = this;
 
-  for(var i = 0; i < self.upvotesArr.length; i++){
-    if(self.upvotesArr[i].upvoter === upvoteInfo.upvoter){
-      self.upvotesArr.splice(i,1);
-      self.upvotes = self.upvotesArr.length - 1;
+  for(var i = 0; i < self.votesArr.length; i++){
+    if(self.votesArr[i].voter === voteInfo.voter){
+      self.votesArr.splice(i,1);
+      self.votes = self.votesArr.length - 1;
       self.save(cb);
       return;
     }
   }
 
-  self.upvotesArr.push(upvoteInfo);
-  self.upvotes = self.upvotesArr.length - 1;
+  self.votesArr.push(voteInfo);
+  self.votes = self.votesArr.length - 1;
   self.save(cb);
 };
 
