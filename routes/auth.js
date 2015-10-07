@@ -12,7 +12,10 @@ function init(io){
     passport.authenticate('local', function(err, user, info){
       if(err){ return next(err);}
       if(user){
-        return res.json({token: user.generateJWT(user.local.username)})
+        var token = user.generateJWT(user.local.username);
+        var usernameBase = token.split('.')[1];
+        var username = (new Buffer(usernameBase, 'base64')).toString('utf-8');
+        return res.json({token: token, username: username});
       }else{
         return res.status(401).json(info);
       }
@@ -46,7 +49,10 @@ function init(io){
         console.log(err);
         return next(err);
       }
-      return res.json({token: user.generateJWT(user.local.username)});
+      var token = user.generateJWT(user.local.username);
+      var usernameBase = token.split('.')[1];
+      var username = (new Buffer(usernameBase, 'base64')).toString('utf-8');
+      return res.json({token: token, username: username});
     });
   });
 

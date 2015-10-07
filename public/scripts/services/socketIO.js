@@ -5,7 +5,7 @@ angular
 socketIO.$inject = ['$rootScope'];
 
 function socketIO($rootScope){
-  var socket = io.connect('http://localhost:3000');
+  var socket = io.connect('http://10.0.2.212:3000');
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {

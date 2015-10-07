@@ -21,6 +21,10 @@ li{
   margin-left: 10px;
 }
 
+.glyphicon-thumbs-down, .glyphicon-thumbs-up{
+  margin-left: 0;
+}
+
 .badge{
   float: right;
 }

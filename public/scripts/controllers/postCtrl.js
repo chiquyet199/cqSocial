@@ -13,6 +13,7 @@ function postCtrl($scope, postsSvc, authSvc, notificationSvc, socketIO){
   $scope.deletePost = deletePost;
   $scope.getVoteMode = getVoteMode;
   $scope.postComment = postComment;
+  $scope.keyUpOnEdit = keyUpOnEdit;
   $scope.isUserAuthPost = isUserAuthPost;
   $scope.toggleEditModeFunc = toggleEditModeFunc;
   $scope.getAllCommentsInPost = getAllCommentsInPost;
@@ -55,6 +56,9 @@ function postCtrl($scope, postsSvc, authSvc, notificationSvc, socketIO){
 
   function toggleEditModeFunc(){
     $scope.editMode = !$scope.editMode;
+    if($scope.editMode){
+      $scope.postBeforeEdit = $scope.postObj.title;
+    }
   }
 
   function editPost(post){
@@ -65,6 +69,13 @@ function postCtrl($scope, postsSvc, authSvc, notificationSvc, socketIO){
       toggleEditModeFunc();
       notificationSvc.success('Update successful!')
     });
+  }
+
+  function keyUpOnEdit(e){
+    if(e.keyCode === 27){
+      $scope.postObj.title = $scope.postBeforeEdit;
+      toggleEditModeFunc();
+    }
   }
 
   function deletePost(post){

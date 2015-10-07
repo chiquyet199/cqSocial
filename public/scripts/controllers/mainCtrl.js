@@ -47,6 +47,17 @@ function mainCtrl($scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout
     }
   });
 
+  socketIO.on('postEdited', function(post){
+    var length = $scope.posts.length;
+    var postId = post._id;
+    for(var i = 0; i < length; i++){
+      if($scope.posts[i]._id === postId){
+        $scope.posts[i].title = post.title;
+        return;
+      }
+    }
+  });
+
   $scope.addNewPost = addNewPost;
 
   function getAllPosts(){
@@ -69,7 +80,6 @@ function mainCtrl($scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout
     };
 
     postsSvc.createPost(post).success(function(){
-      socketIO.emit('postCreated', post);
       notificationSvc.success('Successfully added!');
     });
     $scope.title = '';

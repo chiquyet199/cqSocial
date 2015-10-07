@@ -57,6 +57,7 @@ function init(io){
       post.link = req.body.link || post.link;
       post.save(function(err){
         if(err){ return next(err); }
+        io.emit('postEdited', post);
         res.json({ message: 'Data has updated succesfully!'});
       });
     })

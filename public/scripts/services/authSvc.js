@@ -10,8 +10,9 @@ function authSvc($http, $window){
     facebookLogin: function(){
       return $http.get('/auth/facebook');
     },
-    saveToken: function(token){
-      $window.localStorage['app-token'] = token;
+    saveToken: function(data){
+      $window.localStorage['app-token'] = data.token;
+      $window.localStorage['username'] = JSON.parse(data.username).username;
     },
     getToken: function(){
       return $window.localStorage['app-token'];
@@ -26,23 +27,25 @@ function authSvc($http, $window){
     },
     currentUser: function(){
       if(auth.isLoggedIn()){
-        var token = auth.getToken();
-        var payload = JSON.parse($window.atob(token.split('.')[1]));
-        return payload.username;
+        // var token = auth.getToken();
+        // var payload = JSON.parse($window.atob(token.split('.')[1]));
+        // return payload.username;
+        return $window.localStorage['username'];
       }
     },
     register: function(user){
       return $http.post('/register', user).success(function(data){
-        auth.saveToken(data.token);
+        auth.saveToken(data);
       });
     },
     logIn: function(user){
       return $http.post('/login', user).success(function(data){
-        auth.saveToken(data.token);
+        auth.saveToken(data);
       });
     },
     logOut: function(){
       $window.localStorage.removeItem('app-token');
+      $window.localStorage.removeItem('username');
     }
   };
   return auth;
