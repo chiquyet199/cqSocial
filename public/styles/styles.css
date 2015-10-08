@@ -26,6 +26,7 @@ li{
 }
 
 .badge{
+  cursor: pointer;
   float: right;
 }
 
@@ -54,4 +55,28 @@ li{
 
 .hidden{
   display: hidden
+}
+
+.operators{
+  position: relative;
+}
+
+.vote-tooltip{
+  width: auto;
+  display: inline;
+  position: absolute;
+  right: 0;
+  top: 10px;
+  border: 1px solid black;
+  z-index: 10;
+  background-color: white;
+  display: none;
+}
+
+.vote-tooltip.active{
+  display: block;
+}
+
+.noti{
+  margin-top: 17px;
 }

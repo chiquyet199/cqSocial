@@ -5,7 +5,7 @@
       <span class="title">{{postObj.title}}</span>
     </div>
     <div class="operators col-md-12">
-      <span class="badge">{{postObj.votes}}</span>
+      <span vote-tooltip class="badge">{{postObj.votes}}</span>
       <span ng-show="voteMode" class="glyphicon glyphicon-thumbs-up" ng-click="votePost(postObj)"></span>
       <span ng-hide="voteMode" class="glyphicon glyphicon-thumbs-down" ng-click="votePost(postObj)"></span>
       <span class="glyphicon glyphicon-comment"></span>

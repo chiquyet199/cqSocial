@@ -23,12 +23,16 @@ function mainCtrl($scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout
     }
   });
 
-  socketIO.on('postVoted', function(post){
+  socketIO.on('postVoted', function(data){
     var length = $scope.posts.length;
-    var postId = post._id;
+    var postId = data.post._id;
+    if(data.post.author === authSvc.currentUser() && data.voteInfo.voter !== data.post.author){
+      mes = ((data.voteInfo.gap > 0) ? (data.voteInfo.voter + ' like') : (data.voteInfo.voter + ' unlike')) + ' your post';
+      notificationSvc.info(mes);
+    }
     for(var i = 0; i < length; i++){
       if($scope.posts[i]._id === postId){
-        $scope.posts[i].votes = post.votes;
+        $scope.posts[i].votes = data.post.votes;
         return;
       }
     }
@@ -39,6 +43,10 @@ function mainCtrl($scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout
     var postId = data.post._id;
     var timeCmt = data.cmt.time;
     var newCmt = data.cmt;
+    if(data.post.author === authSvc.currentUser() && data.cmt.author !== data.post.author){
+      mes = data.cmt.author + ' comment on your post';
+      notificationSvc.info(mes);
+    }
     for(var i = 0; i < length; i++){
       if($scope.posts[i]._id === postId){
         $scope.posts[i].comments.push(newCmt);

@@ -81,9 +81,11 @@ function init(io){
 
     .put(auth, function(req, res, next){
       var voteInfo = req.body;
+      var oldVotes = req.post.votes;
       req.post.vote(voteInfo, function(err, post){
         if(err){ return next(err)};
-        io.emit('postVoted', post);
+        voteInfo.gap = req.post.votes - oldVotes;
+        io.emit('postVoted', {post: post, voteInfo: voteInfo});
         res.json(post);
       });
     });
