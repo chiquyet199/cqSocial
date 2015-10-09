@@ -1,17 +1,18 @@
+(function(){
+  angular
+    .module('app')
+    .controller('NavCtrl', NavCtrl);
 
-angular
-  .module('app')
-  .controller('navCtrl', navCtrl);
+  NavCtrl.$inject = ['$scope', 'authSvc', '$state'];
 
-navCtrl.$inject = ['$scope', 'authSvc', '$state'];
+  function NavCtrl($scope, authSvc, $state){
+    $scope.isLoggedIn = authSvc.isLoggedIn;
+    $scope.username = authSvc.currentUser().username;
+    $scope.logOut = logOut;
 
-function navCtrl($scope, authSvc, $state){
-  $scope.isLoggedIn = authSvc.isLoggedIn;
-  $scope.currentUser = authSvc.currentUser;
-  $scope.logOut = logOut;
-
-  function logOut(){
-    authSvc.logOut();
-    $state.go('login');
+    function logOut(){
+      authSvc.logOut();
+      $state.go('login');
+    }
   }
-}
+})();

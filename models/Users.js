@@ -13,7 +13,8 @@ var UserSchema = new mongoose.Schema({
     token: String,
     email: String,
     name: String
-  }
+  },
+  friends: []
 });
 
 UserSchema.methods.setPassword = function(password){
@@ -26,6 +27,10 @@ UserSchema.methods.validPassword = function(password){
 
   return this.local.hash === hash;
 };
+
+UserSchema.methods.addFriend = function(friend){
+  this.friends.push(friend);
+}
 
 UserSchema.methods.generateJWT = function(username){
   //set expiration to 60 days

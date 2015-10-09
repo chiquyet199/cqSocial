@@ -5,7 +5,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
     .state('home', {
       url: '/',
       templateUrl: 'views/home.html',
-      controller: 'mainCtrl',
+      controller: 'MainCtrl',
       onEnter: ['$state', 'authSvc', function($state, authSvc){
         if(!authSvc.isLoggedIn()){
           $state.go('login');
@@ -15,7 +15,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
     .state('login', {
       url: '/login',
       templateUrl: 'views/login.html',
-      controller: 'authCtrl',
+      controller: 'AuthCtrl',
       onEnter: ['$state', 'authSvc', function($state, authSvc){
         if(authSvc.isLoggedIn()){
           $state.go('home');
@@ -24,7 +24,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
     }).state('register', {
       url: '/register',
       templateUrl: 'views/register.html',
-      controller: 'authCtrl',
+      controller: 'AuthCtrl',
       onEnter: ['$state', 'authSvc', function($state, authSvc){
         if(authSvc.isLoggedIn()){
           $state.go('home');

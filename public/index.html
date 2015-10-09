@@ -7,6 +7,7 @@
   <link href="/styles/styles.css" rel="stylesheet">
   <link href="/libs/css/angular-toastr.css" rel="stylesheet">
 
+  <!-- LIBRARY SCRIPT -->
   <script src="/libs/js/angular.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
   <script src="/libs/js/angular-route.js"></script>
@@ -16,31 +17,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+  <!-- MODULE SCRIPT -->
   <script src="/scripts/app.js"></script>
-  <script src="/scripts/controllers/mainCtrl.js"></script>
-  <script src="/scripts/controllers/postCtrl.js"></script>
-  <script src="/scripts/controllers/authCtrl.js"></script>
-  <script src="/scripts/controllers/navCtrl.js"></script>
+
+  <!-- CONTROLLER SCRIPT -->
+  <script src="/scripts/controllers/MainCtrl.js"></script>
+  <script src="/scripts/controllers/PostCtrl.js"></script>
+  <script src="/scripts/controllers/AuthCtrl.js"></script>
+  <script src="/scripts/controllers/NavCtrl.js"></script>
+  <script src="/scripts/controllers/UserCtrl.js"></script>
+
+  <!-- SERVICE SCRIPT -->
   <script src="/scripts/services/postsSvc.js"></script>
   <script src="/scripts/services/notificationSvc.js"></script>
   <script src="/scripts/services/authSvc.js"></script>
+  <script src="/scripts/services/userSvc.js"></script>
   <script src="/scripts/services/socketIO.js"></script>
+
+  <!-- DIRECTIVE SCRIPT -->
   <script src="/scripts/directives/confirmClick.js"></script>
   <script src="/scripts/directives/post.js"></script>
   <script src="/scripts/directives/voteTooltip.js"></script>
+
+  <!-- FILTER SCRIPT -->
   <script src="/scripts/filters/reverse.js"></script>
   <script src="/scripts/filters/datetime.js"></script>
 </head>
 <body ng-app="app">
 
   <!-- HEADER -->
-  <nav class="navbar navbar-default" ng-controller="navCtrl">
+  <nav class="navbar navbar-default" ng-controller="NavCtrl">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">CQ-Social</a>
     </div>
     <ul class="nav navbar-nav pull-right">
       <li ng-show="isLoggedIn()"><span class="noti badge">1</span></li>
-      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a>{{ username }}</a></li>
       <li ng-show="isLoggedIn()"><a href="/" ng-click="logOut()">Log Out</a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
       <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>

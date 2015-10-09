@@ -42,9 +42,11 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json'}));    // parse appli
 
 // route ====================================================================================================
 var indexRouter = require('./routes/index')(io);
-var apiRouter = require('./routes/api')(io);
+var apiPostRouter = require('./routes/apiPost')(io);
+var apiUserRouter = require('./routes/apiUser')(io);
 var authRouter = require('./routes/auth')(io);
-app.use('/api/posts', apiRouter);
+app.use('/api/posts', apiPostRouter);
+app.use('/api/users', apiUserRouter)
 app.use('/', authRouter)
 app.get('*', indexRouter);
 

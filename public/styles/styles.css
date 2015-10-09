@@ -80,3 +80,8 @@ li{
 .noti{
   margin-top: 17px;
 }
+
+.glyphicon-plus, .glyphicon-envelope{
+  margin-right: 20px;
+  margin-left: 0;
+}
