@@ -7,8 +7,12 @@ function init(server) {
       socket.join(data.id);
     });
     socket.on('friendRequest', function(data){
-      var id = data._id;
-      io.sockets.in(id).emit('xxx', {msg: 'hello'});
+      var id = data.receiver._id;
+      io.sockets.in(id).emit('haveFriendRequest', data.sender);
+    })
+    socket.on('friendAccept', function(data){
+      var id = data.sender._id;
+      io.sockets.in(id).emit('haveFriendAccept', data);
     })
     socket.on('postCmt', function(data){
       socket.broadcast.emit('postCommented', data);

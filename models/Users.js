@@ -14,6 +14,7 @@ var UserSchema = new mongoose.Schema({
     email: String,
     name: String
   },
+  friendRequests: [],
   friends: []
 });
 
@@ -28,8 +29,44 @@ UserSchema.methods.validPassword = function(password){
   return this.local.hash === hash;
 };
 
-UserSchema.methods.addFriend = function(friend){
+UserSchema.methods.saveFriendRequest = function(friendRequest, cb){
+  // this.friendRequests = [];
+  // this.friends = [];
+  // this.save(cb);
+  // console.log(111);
+
+  var isExist = this.friendRequests.filter(function(fr){
+    return fr.sender._id === friendRequest.sender._id;
+  }).length > 0;
+
+  if(isExist){
+    this.save(cb);
+    return;
+  }
+
+  this.friendRequests.push(friendRequest);
+  this.save(cb);
+}
+
+UserSchema.methods.addFriend = function(friend, cb){
+  var isExist = this.friends.filter(function(fr){
+    return fr._id === friend._id;
+  }).length > 0;
+
+  if(isExist){
+    this.save(cb);
+    return;
+  }
+
   this.friends.push(friend);
+  for(var i = 0; i < this.friendRequests.length; i++){
+    if(this.friendRequests[i]._id === friend._id){
+      console.log(this.friendRequests.length);
+      this.friendRequests.pop(this.friendRequests[i]);
+      console.log(this.friendRequests.length);
+    }
+  }
+  this.save(cb);
 }
 
 UserSchema.methods.generateJWT = function(username){

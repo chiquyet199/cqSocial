@@ -12,10 +12,6 @@
 
     socketIO.emit('join', {id: authSvc.currentUser()._id});
 
-    socketIO.on('xxx', function(data){
-      console.log('xxx', data);
-    });
-
     socketIO.on('newPostCreated', function(post){
       $scope.posts.push(post);
     });
