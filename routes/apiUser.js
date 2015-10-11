@@ -40,6 +40,8 @@ function init(io){
 
     .post(function(req, res){
       var sender = req.body.sender;
+      var senderUser = User.find({ _id: sender._id});
+      //senderUser add friendback
       req.user.addFriend(sender, function(err){
         if(err){ return next(err); }
         res.json(sender);

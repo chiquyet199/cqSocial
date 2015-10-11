@@ -7,7 +7,7 @@
 
   function NavCtrl($scope, authSvc, $state){
     $scope.isLoggedIn = authSvc.isLoggedIn;
-    $scope.username = authSvc.currentUser().username;
+    $scope.username = $scope.isLoggedIn() ? authSvc.currentUser().username : '';
     $scope.logOut = logOut;
 
     function logOut(){

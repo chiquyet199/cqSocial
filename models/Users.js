@@ -30,8 +30,6 @@ UserSchema.methods.validPassword = function(password){
 };
 
 UserSchema.methods.saveFriendRequest = function(friendRequest, cb){
-  // this.friendRequests = [];
-  // this.friends = [];
   // this.save(cb);
   // console.log(111);
 
@@ -49,6 +47,7 @@ UserSchema.methods.saveFriendRequest = function(friendRequest, cb){
 }
 
 UserSchema.methods.addFriend = function(friend, cb){
+  this.friends = [];
   var isExist = this.friends.filter(function(fr){
     return fr._id === friend._id;
   }).length > 0;
@@ -58,14 +57,16 @@ UserSchema.methods.addFriend = function(friend, cb){
     return;
   }
 
+  //add friend
   this.friends.push(friend);
-  for(var i = 0; i < this.friendRequests.length; i++){
-    if(this.friendRequests[i]._id === friend._id){
-      console.log(this.friendRequests.length);
-      this.friendRequests.pop(this.friendRequests[i]);
-      console.log(this.friendRequests.length);
-    }
-  }
+
+  //check and remove friend request
+  var idx = this.friendRequests.map(function(x){ return x.sender._id; }).indexOf(friend._id);
+  if (idx >= 0) {
+    this.friendRequests.splice(idx, 1);
+  };
+
+  //done
   this.save(cb);
 }
 

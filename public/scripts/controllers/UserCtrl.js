@@ -63,13 +63,15 @@
 
     function acceptFriendRequest(friendRequest){
       userSvc.acceptFriendRequest(friendRequest).error(function(err){
-        notificationSvc.error('err');
+        console.log(err);
+        notificationSvc.error('Open console to see error!');
       }).success(function(data){
-        for(var i = 0; i < $scope.friendRequests.length; i++){
-          if($scope.friendRequests[i].sender._id === data.sender._id){
-            $scope.friendRequests.pop($scope.friendRequests[i]);
-          }
+        //remove friend request
+        var idx = $scope.friendRequests.map(function(x){ return x.sender._id; }).indexOf(data._id);
+        if(idx >= 0){
+          $scope.friendRequests.splice(idx, 1);
         }
+        
         socketIO.emit('friendAccept', {sender: data, receiver: authSvc.currentUser().username});
       });
     }
