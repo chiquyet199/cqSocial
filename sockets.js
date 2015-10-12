@@ -8,7 +8,7 @@ function init(server) {
     });
     socket.on('friendRequest', function(data){
       var id = data.receiver._id;
-      io.sockets.in(id).emit('haveFriendRequest', data.sender);
+      io.sockets.in(id).emit('haveFriendRequest', data.friendRequest);
     })
     socket.on('friendAccept', function(data){
       var id = data.sender._id;

@@ -11,12 +11,10 @@
       getAllUsers: function(){
         return $http.get('/api/users');
       },
-      saveFriendRequest: function(friendRequest){
-        var userId = authSvc.currentUser()._id;
+      saveFriendRequest: function(friendRequest, userId){
         return $http.post('/api/users/' + userId + '/friendrequest', friendRequest);
       },
-      acceptFriendRequest: function(friend){
-        var userId = authSvc.currentUser()._id;
+      acceptFriendRequest: function(friend, userId){
         return $http.post('/api/users/' + userId + '/addfriend', friend);
       }
     };

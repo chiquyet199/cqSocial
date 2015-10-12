@@ -8,7 +8,11 @@
 
   function MainCtrl($scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout, $window){
     $scope.posts = [];
-    getAllPosts();
+    $scope.childData = {};
+
+    $scope.$on('gotUsers', function(data){
+      getAllPosts();
+    });
 
     socketIO.emit('join', {id: authSvc.currentUser()._id});
 
@@ -73,9 +77,25 @@
 
     function getAllPosts(){
       postsSvc.getAllPosts().success(function(data){
-        $scope.posts = data;
-        $window.posts = data;
+        $scope.posts = getPosts(data);
       });
+    }
+
+    function getPosts(posts){
+      var username = authSvc.currentUser().username;
+      var currentUser = $scope.childData.users.filter(function(user){
+        return user.username === username;
+      });
+
+      var myPosts = posts.filter(function(post){
+        return post.author === username;
+      });
+
+      var friendPosts = posts.filter(function(post){
+        return currentUser[0].friends.indexOf(post.author) >= 0;
+      });
+
+      return myPosts.concat(friendPosts);
     }
 
     function addNewPost(){

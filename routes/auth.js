@@ -15,7 +15,8 @@ function init(io){
         var token = user.generateJWT(user.local.username);
         var usernameBase = token.split('.')[1];
         var username = (new Buffer(usernameBase, 'base64')).toString('utf-8');
-        return res.json({token: token, username: username});
+        var friends = user.friends;
+        return res.json({token: token, username: username, friends: friends});
       }else{
         return res.status(401).json(info);
       }
@@ -36,23 +37,21 @@ function init(io){
     }
 
     if (usernameExisted(req.body.username)) {
-      console.log(usernameExisted(req.body.username));
       return res.status(500).json({message: 'Username already exist! Please choose another username!'});
     }
 
     var user = new User();
     user.local.username = req.body.username;
     user.setPassword(req.body.password);
+    user.friends = [];
 
     user.save(function(err){
-      if(err){
-        console.log(err);
-        return next(err);
-      }
+      if(err){ return next(err); }
       var token = user.generateJWT(user.local.username);
       var usernameBase = token.split('.')[1];
       var username = (new Buffer(usernameBase, 'base64')).toString('utf-8');
-      return res.json({token: token, username: username});
+      var friends = user.friends;
+      return res.json({token: token, username: username, friends: friends});
     });
   });
 

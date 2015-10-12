@@ -14,5 +14,9 @@
       authSvc.logOut();
       $state.go('login');
     }
+
+    $scope.$on('userRegistered', function(){
+      $scope.username = $scope.isLoggedIn() ? authSvc.currentUser().username : '';
+    });
   }
 })();

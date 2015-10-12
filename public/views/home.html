@@ -24,10 +24,12 @@
       <div class="panel-heading">User List</div>
       <div class="panel-body">
         <input type="text" class="form-control" placeholder="search by username..." ng-model="searchUserText">
-        <ul ng-repeat="user in users | filter:searchUserText">
-          <li>
-            <span class="glyphicon glyphicon-plus" ng-click="friendRequest(user)"></span>
-            <span class="glyphicon glyphicon-envelope"></span>
+        <ul ng-repeat="user in childData.users | filter:searchUserText">
+          <li ng-hide="isCurrentUser(user)">
+            <span ng-show="isFriend(user)" class="glyphicon glyphicon-ok"></span>
+            <span ng-show="isFRSend(user)" class="glyphicon glyphicon-send"></span>
+            <span ng-hide="isFriend(user)" class="glyphicon glyphicon-plus" ng-click="friendRequest(user)"></span>
+            <span ng-show="false" class="glyphicon glyphicon-envelope"></span>
             {{user.username}}
           </li>
         </ul>

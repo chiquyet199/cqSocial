@@ -30,8 +30,6 @@ UserSchema.methods.validPassword = function(password){
 };
 
 UserSchema.methods.saveFriendRequest = function(friendRequest, cb){
-  // this.save(cb);
-  // console.log(111);
 
   var isExist = this.friendRequests.filter(function(fr){
     return fr.sender._id === friendRequest.sender._id;
@@ -47,7 +45,6 @@ UserSchema.methods.saveFriendRequest = function(friendRequest, cb){
 }
 
 UserSchema.methods.addFriend = function(friend, cb){
-  this.friends = [];
   var isExist = this.friends.filter(function(fr){
     return fr._id === friend._id;
   }).length > 0;

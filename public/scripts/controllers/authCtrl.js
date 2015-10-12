@@ -16,7 +16,9 @@
       authSvc.register($scope.user).error(function(error){
         notificationSvc.error(error.message);
       }).then(function(){
+
         $location.path('/');
+        $scope.$root.$broadcast('userRegistered', {});
       });
     }
 

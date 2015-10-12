@@ -6,6 +6,17 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 function init(io){
+
+  function handlingError(cb){
+    return function(err, result){
+      if(err){
+        return next(err);
+      }else{
+        cb(result);
+      }
+    }
+  }
+
   router.route('/')
 
     .get(function(req, res, next){
@@ -40,12 +51,25 @@ function init(io){
 
     .post(function(req, res){
       var sender = req.body.sender;
-      var senderUser = User.find({ _id: sender._id});
-      //senderUser add friendback
-      req.user.addFriend(sender, function(err){
-        if(err){ return next(err); }
+      var receiver = {
+        _id: req.user._id,
+        username: req.user.local.username
+      };
+
+      User.findOne({ _id: sender._id}, handlingError(senderAddFriend));
+
+      function senderAddFriend(sendUser){
+        sendUser.addFriend(receiver, handlingError(userAddFriend));
+      }
+
+      function userAddFriend(){
+        req.user.addFriend(sender, handlingError(done));
+      }
+
+      function done(){
         res.json(sender);
-      });
+      }
+
     });
 
   router.route('/:user_id/friendrequest')
