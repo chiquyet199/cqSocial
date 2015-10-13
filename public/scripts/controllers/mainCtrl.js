@@ -17,7 +17,13 @@
     socketIO.emit('join', {id: authSvc.currentUser()._id});
 
     socketIO.on('newPostCreated', function(post){
-      $scope.posts.push(post);
+      var author = post.author;
+      var scopeUser = $scope.childData.users.filter(function(user){
+        return user.username === authSvc.currentUser().username;
+      })[0];
+      if(scopeUser.friends.map(function(f){ return f.username; }).indexOf(author) >= 0){
+        $scope.posts.push(post);
+      }
     });
 
     socketIO.on('postDeleted', function(postId){
@@ -92,7 +98,7 @@
       });
 
       var friendPosts = posts.filter(function(post){
-        return currentUser[0].friends.indexOf(post.author) >= 0;
+        return currentUser[0].friends.map(function(x){return x.username}).indexOf(post.author) >= 0;
       });
 
       return myPosts.concat(friendPosts);

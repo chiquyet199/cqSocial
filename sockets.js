@@ -5,6 +5,8 @@ function init(server) {
   io.on('connection', function (socket) {
     socket.on('join', function (data) {
       socket.join(data.id);
+      socket.broadcast.emit('newUser', {});
+      console.log('emit newUser');
     });
     socket.on('friendRequest', function(data){
       var id = data.receiver._id;
