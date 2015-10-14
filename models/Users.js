@@ -68,10 +68,10 @@ UserSchema.methods.addFriend = function(friend, cb){
 }
 
 UserSchema.methods.generateJWT = function(username){
-  //set expiration to 60 days
+  //set expiration to 1 days
   var today = new Date();
   var exp = new Date(today);
-  exp.setDate(today.getDate() + 60);
+  exp.setDate(today.getDate() + 1);
 
   return jwt.sign({
     _id: this._id,
@@ -84,7 +84,7 @@ UserSchema.methods.generateJWT = function(username){
 The first argument of the jwt.sign() method is the payload that gets signed.
 Both the server and client will have access to the payload. The exp value in
 the payload is a Unix timestamp in seconds that will specify when the token
-expires. For this example we set it to 60 days in the future. The second
+expires. For this example we set it to 1 days in the future. The second
 argument of jwt.sign() is the secret used to sign our tokens. We're hard-coding
 it in this example, but it is strongly recommended that you use an environment
 variable for referencing the secret and keep it out of your codebase.

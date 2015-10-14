@@ -9,6 +9,7 @@ function init(server) {
       console.log('emit newUser');
     });
     socket.on('friendRequest', function(data){
+      console.log('got friendRequest event');
       var id = data.receiver._id;
       io.sockets.in(id).emit('haveFriendRequest', data.friendRequest);
     })

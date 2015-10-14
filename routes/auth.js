@@ -36,6 +36,8 @@ function init(io){
       return res.status(400).json({message: 'Please fill out all fields!'});
     }
 
+    req.body.username = req.body.username.trim();
+
     if (usernameExisted(req.body.username)) {
       return res.status(500).json({message: 'Username already exist! Please choose another username!'});
     }

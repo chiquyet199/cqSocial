@@ -11,11 +11,11 @@
         return $http.get('/auth/facebook');
       },
       saveToken: function(data){
-        $window.localStorage['app-token'] = data.token;
-        $window.localStorage['username'] = JSON.parse(data.username).username;
+        $window.localStorage['token'] = data.token;
+        $window.localStorage['name'] = JSON.parse(data.username).username;
       },
       getToken: function(){
-        return $window.localStorage['app-token'];
+        return $window.localStorage['token'];
       },
       isLoggedIn: function(){
         var token = auth.getToken();
@@ -32,7 +32,7 @@
             var payload = JSON.parse($window.atob(token.split('.')[1]));
             return {
               _id: payload._id,
-              username: $window.localStorage['username']
+              username: $window.localStorage['name']
             };
           }
           return {};
@@ -49,8 +49,8 @@
         });
       },
       logOut: function(){
-        $window.localStorage.removeItem('app-token');
-        $window.localStorage.removeItem('username');
+        $window.localStorage.removeItem('token');
+        $window.localStorage.removeItem('name');
       }
     };
     return auth;

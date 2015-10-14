@@ -14,6 +14,10 @@
       getAllPosts();
     });
 
+    $scope.$on('haveNewFriend', function(){
+      getAllPosts();
+    });
+
     socketIO.emit('join', {id: authSvc.currentUser()._id});
 
     socketIO.on('newPostCreated', function(post){
@@ -96,6 +100,8 @@
       var myPosts = posts.filter(function(post){
         return post.author === username;
       });
+
+      console.log(myPosts + ' ' + myPosts.length);
 
       var friendPosts = posts.filter(function(post){
         return currentUser[0].friends.map(function(x){return x.username}).indexOf(post.author) >= 0;

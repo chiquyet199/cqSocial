@@ -23,8 +23,12 @@
 
     socketIO.on('haveFriendRequest', function(friendRequest){
       if(authSvc.isLoggedIn()){
-        $scope.friendRequests.push(friendRequest);
-        notificationSvc.info(friendRequest.sender.username + ' send you a friend request!');
+        console.log('got haveFriendRequest');
+        var idx = $scope.friendRequests.map(function(fr){ return fr.sender.username; }).indexOf(friendRequest.sender.username);
+        if(idx < 0){
+          $scope.friendRequests.push(friendRequest);
+          notificationSvc.info(friendRequest.sender.username + ' send you a friend request!');
+        }
       }
     });
 
@@ -32,7 +36,7 @@
       notificationSvc.info(data.receiver.username + ' has accept your friend request!');
       var scopeUser = getScopeUser();
       scopeUser.friends.push(data.receiver);
-      $scope.$parent.getAllPosts();
+      $scope.$parent.$broadcast('haveNewFriend', {});
     });
 
     function getScopeUser(user){
@@ -89,6 +93,14 @@
     }
 
     function friendRequest(receiver){
+      var idx = $scope.friendRequests.map(function(fr){
+        return fr.sender.username;
+      }).indexOf(receiver.username);
+      if(idx >= 0){
+        acceptFriendRequest({sender: receiver, accept: false});
+        return;
+      }
+
       var sender = authSvc.currentUser();
       if(!isFriend(receiver) && !isFRsend(receiver)){
         var friendRequest = {
@@ -121,7 +133,7 @@
 
         var scopeUser = getScopeUser();
         scopeUser.friends.push(data);
-        $scope.$parent.getAllPosts();
+        $scope.$parent.$broadcast('haveNewFriend', {});
 
         socketIO.emit('friendAccept', {sender: data, receiver: authSvc.currentUser()});
       });
