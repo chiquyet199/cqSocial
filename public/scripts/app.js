@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'toastr']);
+var app = angular.module('app', ['ui.router', 'toastr', 'ngFileUpload']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider){
   $stateProvider

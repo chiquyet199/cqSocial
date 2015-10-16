@@ -1,3 +1,5 @@
+<button ng-click="getImg()"></button>
+<canvas id="canvas"></canvas>
 <div class="col-md-10 col-md-offset-1">
   <div class="col-md-5">
     <div class="panel panel-primary">
@@ -13,17 +15,22 @@
             </div>
           </div>
         </form>
+        <form name="form" enctype="multipart/form-data">
+            {{uploadProgress}}
+        <div class="btn btn-default" ngf-select ng-model="file" name="file" accept="image/*">Select</div>
+        <input type="text" class="form-control" id="post-title" placeholder="What'xxxx?">
+
+        <button type="submit" ng-click="submit()">submit</button>
+      </form>
       </div>
     </div>
     <div class="users panel panel-primary" ng-controller="UserCtrl">
-
       <ul>
         <li ng-repeat="fr in friendRequests">
           <span><strong>{{fr.sender.username}}</strong> send you a friend request  </span>
           <button ng-click="acceptFriendRequest(fr)">Accept</button>
         </li>
       </ul>
-
       <div class="panel-heading">User List</div>
       <div class="panel-body">
         <input type="text" class="form-control" placeholder="search by username..." ng-model="searchUserText.username">

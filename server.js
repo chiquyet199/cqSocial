@@ -45,6 +45,64 @@ var indexRouter = require('./routes/index')(io);
 var apiPostRouter = require('./routes/apiPost')(io);
 var apiUserRouter = require('./routes/apiUser')(io);
 var authRouter = require('./routes/auth')(io);
+
+
+var fs = require('fs');
+var path = require('path');
+var imgSrc = path.join(__dirname, 'tmp/ava.jpg');
+
+app.get('/api/getImg', function(req, res){
+  fs.readFile(imgSrc, function(err, data){
+    if(err){
+      console.log(err);
+    }
+
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end(new Buffer(data).toString('base64'));
+  });
+})
+
+
+// var multer = require('multer');
+// var upload = multer({ dest: './uploads/'});
+
+// app.use(multer({ dest: './uploads/',
+//   rename: function (fieldname, filename) {
+//     return filename+Date.now();
+//   },
+//   onFileUploadStart: function (file) {
+//     console.log(file.originalname + ' is starting ...');
+//   },
+//   onFileUploadComplete: function (file) {
+//     console.log(file.fieldname + ' uploaded to  ' + file.path)
+//   }
+// }));
+
+// app.post('/api/upload/image', upload.single('file'), function(req,res, next){
+// // app.post('/api/upload/image',function(req,res, next){
+//   console.log(req.file);
+//   var file = req.file;
+//   var imgData = file.buffer;
+//   console.log(imgData);
+//   var folder = require('path').join(__dirname, 'uploads/xxx');
+//   fs.write(folder, imgData, function(err){
+//     if(err){
+//       console.log(err);
+//       return next(err);
+//     }
+//     console.log('file saved');
+//   });
+//   // upload(req,res,function(err) {
+//   //   if(err) {
+//   //     console.log(err);
+//   //     return res.end("Error uploading file.");
+//   //   }
+//   //   res.json({mes: 'file uploaded'});
+//   // });
+// });
+
+
+
 app.use('/api/posts', apiPostRouter);
 app.use('/api/users', apiUserRouter)
 app.use('/', authRouter)

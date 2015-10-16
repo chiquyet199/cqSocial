@@ -4,11 +4,50 @@
     .module('app')
     .controller('MainCtrl', MainCtrl);
 
-  MainCtrl.$inject = ['$scope', 'postsSvc', 'notificationSvc', 'authSvc', 'socketIO', '$timeout', '$window'];
+  MainCtrl.$inject = ['$http', '$scope', 'postsSvc', 'notificationSvc', 'authSvc', 'socketIO', '$timeout', '$window', 'Upload'];
 
-  function MainCtrl($scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout, $window){
+  function MainCtrl($http, $scope, postsSvc, notificationSvc, authSvc, socketIO, $timeout, $window, Upload){
     $scope.posts = [];
     $scope.childData = {};
+
+
+      $scope.getImg = function(){
+        $http.get('/api/getimg').success(function(data){
+          var ctx = document.getElementById('canvas').getContext('2d');
+          var img = new Image();
+              img.src = 'data:image/jpeg;base64,' + data;
+              ctx.drawImage(img, 0, 0);
+        }).error(function(err){
+          console.log(err);
+        });
+      };
+
+      $scope.submit = function() {
+        if ($scope.file) {
+          $scope.upload($scope.file);
+        }
+      };
+
+      $scope.upload = function(file){
+        Upload.upload({
+          url: '/api/upload/image',
+          method: 'POST',
+          data: {
+            file: file
+          },
+        }).progress(function(event) {
+          $scope.uploadProgress = Math.floor(event.loaded / event.total);
+          // $scope.$apply();
+        }).success(function(data, status, headers, config) {
+          console.log(data);
+          notificationSvc.success('Photo uploaded!');
+        }).error(function(err) {
+          $scope.uploadInProgress = false;
+          notificationSvc.error('Error uploading file: ' + err.message || err);
+        });
+      }
+
+
 
     $scope.$on('gotUsers', function(data){
       getAllPosts();
